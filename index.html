@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>A phylodynamics pipeline for pathogen sequence data</title>
+  <meta name="description" content="">
+  <meta name="author" content="Mukarram Hossain">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="libraries/frameworks/revealjs/css/reveal.min.css">
+  <link rel="stylesheet" href="libraries/frameworks/revealjs/css/theme/serif.css" id="theme">
+  <link rel="stylesheet" href="libraries/highlighters/highlight.js/css/zenburn.css" id="theme">
+  <!--[if lt IE 9]>
+  <script src="lib/js/html5shiv.js"></script>
+  <![endif]-->  <link rel="stylesheet" href = "assets/css/demo.css">
+<link rel="stylesheet" href = "assets/css/magnifier.css">
+<link rel="stylesheet" href = "assets/css/ribbons.css">
+
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section class='' data-state='' id='slide-1'>
+  <h2>Phylodynamics pipeline for pathogen sequence data</h2>
+  <p><br></br>
+<strong>Mukarram Hossain</strong>  </p>
+
+<p>Department of Veterinary Medicine<br>
+University of Cambridge</p>
+
+<p><br></br></p>
+
+<!--- <img src="assets/img/uc-colour-logo.jpg" width="30%" style="border: 0px">&nbsp; --->
+
+</section>
+<section class='' data-state='' id='slide-2'>
+  <h3>Phylodynamics</h3>
+  <p><br>
+<em>&quot;Viral phylodynamics is defined as the study of how epidemiological, immunological, and evolutionary processes act and potentially interact to shape viral phylogenies.&quot;</em></p>
+
+<p><br>
+<a href="http://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1002947">Volz, Koelle and Bedford (2013)</a></p>
+
+</section>
+<section class='' data-state='' id='slide-3'>
+  <h3>Phylodynamic analysis</h3>
+  <p><br></p>
+
+<ul>
+<li>Serially sampled virus sequences and phylogenies reveal phylodynamic properties</li>
+<li>Frequently use sophisticated software packages:
+
+<ul>
+<li>BEAST</li>
+<li>MrBayes</li>
+</ul></li>
+<li><a href="http://bmcevolbiol.biomedcentral.com/articles/10.1186/1471-2148-7-214">BEAST</a> is cited ~7300 times
+<br><br>
+People use BEAST/MrBayes as a black box</li>
+</ul>
+
+</section>
+<section class='' data-state='' id='slide-4'>
+  
+  <p><br><br><br><br><br><br></p>
+
+<div style="font-size:60px">Phylodynamic analysis - issues</div>
+
+</section>
+<section>
+   <section class='' data-state=''>
+    <h3>Datasets with heterogeneity</h3>
+    <p><img src="assets/img/h1n1.rtt.png" width="60%" style="margin: 10px 10px">&nbsp;</p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h3>Heterogeneity in phylogeny</h3>
+
+<p><img src="assets/img/h1n1.loc.png" width="100%" style="margin: 10px 10px">&nbsp;</p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section class='' data-state='' id='slide-6'>
+  <h3>Resource requirements</h3>
+  <p><img src="assets/img/cwseqs.tree.png" width="60%" style="margin: 10px 10px">&nbsp;</p>
+
+<p><img src="assets/img/timing.png" width="100%" style="margin: 10px 10px">&nbsp;</p>
+
+</section>
+<section class='' data-state='' id='slide-7'>
+  <h3>Incorrect model selection</h3>
+  <p><br></p>
+
+<ul>
+<li>Poor model fit in phylodynamic studies may lead to incorrect estimation
+
+<ul>
+<li><a href="http://sysbio.oxfordjournals.org/content/63/3/322.long">Reid et al. (2014)</a></li>
+<li><a href="http://jvi.asm.org/content/90/4/2155.full">Holmes (2016)</a></li>
+<li><a href="http://ve.oxfordjournals.org/content/2/1/vew007">Rambaut et al. (2016)</a></li>
+</ul></li>
+</ul>
+
+<p><br><strong>Prior analysis is recommended before running BEAST</strong></p>
+
+</section>
+<section class='' data-state='' id='slide-8'>
+  <h3>BEAST</h3>
+  <p><br></p>
+
+<ul>
+<li>Rely on Markov Chain Monte Carlo (MCMC) to obtain posterior estimates </li>
+<li>MCMC is slow to reach stationary distribution for large datasets</li>
+<li>BEAST is an ideal tool for confirmatory analysis</li>
+<li>Not ideal for:
+
+<ul>
+<li>model comparison</li>
+<li>hypothesis testing using goodness of fit<br></li>
+</ul></li>
+</ul>
+
+</section>
+<section class='' data-state='' id='slide-9'>
+  
+  <p><br><br><br><br><br><br></p>
+
+<div style="font-size:60px">Phylodynamic pipeline</div>
+
+</section>
+<section class='' data-state='' id='slide-10'>
+  <h3>Phylopipe</h3>
+  <p><br></p>
+
+<ul>
+<li>For high throughput analysis of heterochronous pathogen sequence data</li>
+<li>Can be used for three purposes:
+
+<ul>
+<li>quality control step</li>
+<li>exploratory tool to obtain rough estimates</li>
+<li>to use these estimates as initial conditions in BEAST</li>
+</ul></li>
+</ul>
+
+</section>
+<section class='' data-state='' id='slide-11'>
+  <h3>PhyloPipe - Tools</h3>
+  <p><Br>
+The following tools are included in the pipeline:</p>
+
+<ul>
+<li>Alignment - <a href="https://github.com/asmmhossain/pipelign">Pipelign</a>, <a href="http://www.drive5.com/muscle/">Muscle</a>, <a href="http://mafft.cbrc.jp/alignment/software/">Mafft</a></li>
+<li>Phylogeny reconstruction - <a href="http://sco.h-its.org/exelixis/web/software/examl/index.html">ExaML</a>, <a href="http://www.cibiv.at/software/iqtree/">IQ-TREE</a></li>
+<li>Evolutionary rate estimation - <a href="https://cran.r-project.org/web/packages/ape/index.html">RTT</a>, <a href="http://bioinformatics.oxfordjournals.org/content/23/2/169.full">TREBLE</a>, <a href="http://www.atgc-montpellier.fr/LSD/">LSD</a></li>
+<li>Time-stamped phylogeny - <a href="https://cran.r-project.org/web/packages/ape/index.html">RTT</a>, <a href="https://cran.r-project.org/web/packages/ape/index.html">CHRONOS</a>, <a href="http://www.atgc-montpellier.fr/LSD/">LSD</a></li>
+<li>Demographic model selection - <a href="http://www.cecalc.ula.ve/BIOINFO/servicios/herr1/GENIE/manual.html">GENIE</a></li>
+<li>Population dynamics - <a href="https://github.com/mdkarcher/phylodyn">Phylodyn</a></li>
+<li>Detecting asymmetry - <a href="https://github.com/bdearlove/treeImbalance">treeImbalance</a></li>
+</ul>
+
+</section>
+<section class='' data-state='' id='slide-12'>
+  <h3>PhyloPipe - workflow</h3>
+  <p><img src="assets/img/phylopipe.png" width="65%" class="centred" style="margin: 10px 10px"/></p>
+
+</section>
+<section class='' data-state='' id='slide-13'>
+  
+  <p><br><br><br><br><br><br></p>
+
+<div style="font-size:60px">Case studies</div>
+
+</section>
+<section class='' data-state='' id='slide-14'>
+  <h3>Dengue virus type 1 (Vietnam)</h3>
+  <p><br></p>
+
+<div width="350" style="float: left;">
+<img src="assets/img/denv1.treefile.png" width="400px" height="400px" class="centred" style="margin: 10px 10px" />
+</div>
+
+<div width="450" style="float: right;">
+<img src="assets/img/denv.png" width="400px" class="centred" style="margin: 10px 10px" />
+</div>
+
+</section>
+<section>
+   <section class='' data-state=''>
+    <h3>H3N2 influenza (HA) - Europe</h3>
+    <p><br></p>
+
+<div width="350" style="float: left;">
+<img src="assets/img/europe.treefile.png" width="400px" height="360px" class="centred" style="margin: 10px 10px" />
+</div>
+
+<div width="450" style="float: right;">
+<img src="assets/img/europe.rtt.png" width="400px" height="360px" class="centred" style="margin: 10px 10px" />
+</div>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h3>Europe - rates and tMRCA</h3>
+
+<p><br>
+<img src="assets/img/europe.rates.png" width="100%" class="centred" style="margin: 10px 10px" /></p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h3>Europe - molecular clock <br></h3>
+
+<p><br>
+<img src="assets/img/europe.chronos.png" width="80%" class="centred" style="margin: 10px 10px" /></p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h3>Europe - demographic model</h3>
+
+<p><br>
+<img src="assets/img/europe.genie.png" width="100%" class="centred" style="margin: 10px 10px" /></p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h3>Europe - skyride</h3>
+
+<p><br>
+<img src="assets/img/europe.skyride.png" width="70%" class="centred" style="margin: 10px 10px" /></p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h3>Europe - asymmetry analysis</h3>
+
+<p><br>
+<img src="assets/img/europe.treeimbalance.png" width="70%" class="centred" style="margin: 10px 10px" /></p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h3>Europe - asymmetry analysis</h3>
+
+<p><br></p>
+
+<div width="350" style="float: left;">
+<img src="assets/img/europe.cherries.hist.png" width="400px" height="360px" class="centred" style="margin: 10px 10px" />
+<div style="font-size:20px">Distribution of number of cherries</div>
+</div>
+
+<div width="450" style="float: right;">
+<img src="assets/img/europe.sackins.hist.png" width="400px" height="360px" class="centred" style="margin: 10px 10px" />
+<div style="font-size:20px">Disribution of Sackin's index</div>
+</div>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+   <section class='' data-state=''>
+    <h3>Europe - initial conditions</h3>
+
+<p><br>
+<img src="assets/img/europe.rate.ess.png" width="60%" class="centred" style="margin: 10px 10px" /></p>
+
+    <aside class='notes'>
+      
+    </aside>
+   </section>
+</section>
+<section class='' data-state='' id='slide-16'>
+  <h3>PhyloPipe - summary</h3>
+  <p><br></p>
+
+<ul>
+<li>Quick and approximate phylodynamic estimation</li>
+<li>Compatible (??) estimation of parameters </li>
+<li>Ease of use</li>
+</ul>
+
+</section>
+<section class='' data-state='' id='slide-17'>
+  <h3>Future works</h3>
+  <p><br></p>
+
+<ul>
+<li>Include more analysis tools </li>
+<li>Set up web service with analysis summary</li>
+<li>Develop open platform distributed application</li>
+</ul>
+
+</section>
+<section class='' data-state='' id='slide-18'>
+  <h3>Acknowledgements</h3>
+  <p><br></p>
+
+<ul>
+<li>Simon Frost</li>
+<li>Bethany Dearlove</li>
+<li>Fei Xiang</li>
+</ul>
+
+</section>
+<section class='' data-state='' id='slide-19'>
+  
+  <p><br>
+<img src="assets/img/logos.png" width="100%" class="centred" style="margin: 10px 10px"/></p>
+
+</section>
+<section class='' data-state='' id='slide-20'>
+  
+  <p><br></br>
+<img src="assets/img/questions.jpg" width="605px" class="centred" style="margin: 10px 10px"/></p>
+
+</section>
+    </div>
+  </div>
+</body>
+  <script src="libraries/frameworks/revealjs/lib/js/head.min.js"></script>
+  <script src="libraries/frameworks/revealjs/js/reveal.min.js"></script>
+  <script>
+  // Full list of configuration options available here:
+  // https://github.com/hakimel/reveal.js#configuration
+  Reveal.initialize({
+    controls: true,
+    progress: true,
+    history: true,
+    center: false,
+    theme: Reveal.getQueryHash().theme || 'serif', 
+    transition: Reveal.getQueryHash().transition || 'cube', 
+    dependencies: [
+    // Cross-browser shim that fully implements classList -
+    // https://github.com/eligrey/classList.js/
+      { src: 'libraries/frameworks/revealjs/lib/js/classList.js', condition: function() { return !document.body.classList;}},
+      // Zoom in and out with Alt+click
+      { src: 'libraries/frameworks/revealjs/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Speaker notes
+      { src: 'libraries/frameworks/revealjs/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+      // Remote control your reveal.js presentation using a touch device
+      //{ src: 'libraries/frameworks/revealjs/plugin/remotes/remotes.js', async: true, condition: function() { return !!document.body.classList; } }
+      ]
+  });
+  </script>  <!-- LOAD HIGHLIGHTER JS FILES -->
+<script src="libraries/highlighters/highlight.js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<!-- DONE LOADING HIGHLIGHTER JS FILES -->
+ 
+
+</html>
